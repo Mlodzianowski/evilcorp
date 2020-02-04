@@ -1,2 +1,2 @@
-# evilcorp.biz Website
+# evilcorp.biz
 This is a work in progress.
