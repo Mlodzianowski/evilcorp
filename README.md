@@ -1,2 +1,2 @@
 # evilcorp.biz
-This is a work in progress.
+Red Team Tools & Tactics - Introduction to Webapp Hacking
