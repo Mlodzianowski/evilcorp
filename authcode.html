@@ -1,0 +1,20 @@
+<h1>Authcode BruteForce</h1><br>
+We need to brute force an HTTP authentication prompt.<br>
+When looking at the headers we see that the password is passed only as an authcode that is sent as
+username:password base64 encoded.
+<br>
+We can't easily use hydra or ncrack as we have no values to pass..<br>
+<br>
+We know the format is create a custom wordlist and base64 the output then send this to the Intruder module of BurpSuite.
+<br>
+For this inital test lets start with the username of 'admin' so we add "admin:" to the start of each line of the password file.<br>
+<br>
+sed -i 's/^/admin:/' INPUTFILE.TXT
+<br>
+Now we have the formatting correct lets read each line of the inputfile and convert each line to base64. 
+Then lets output this to a new file.
+<br>
+while read line; do echo -n  $line | base64 >> OUTPUT-FILE.txt ; done < INPUTFILE.txt
+<br>
+ Now we can run this with BurpSuite Intruder and find the password.
+<br>
