@@ -18,3 +18,30 @@ while read line; do echo -n  $line | base64 >> OUTPUT-FILE.txt ; done < INPUTFIL
 <br>
  Now we can run this with BurpSuite Intruder and find the password.
 <br>
+<BR>
+<H2> Brute-forcing-base64'd user+pass </H2><BR>
+When we want to brute force a login but find the webserver uses basic authentication 
+ and base 64 encodes the username and password with a seperator like ':' we can use burp to do solve this.<BR>
+<br>
+bobby:password
+<br>
+Goto Intruder keep with Sniper.
+<br>
+Select "Custom Iterator"
+<br>
+Under Position 1 add the word or words dependant on if we know the username or not.
+<br>
+Then add in the "Separator for position 1"  box the seperator used. so in most cases ':'
+<br>
+Next change the drop down under "Payload Options [Custom iterator]" to 2.
+<br>
+Next add the word-lists of words you want to try, or just the password if you know it and trying to work out the username.
+<br>
+If you are using a large list it will take a while. just be patient....
+<br>
+Next add a new rule for payload processing. select "Encode" --> "Base64-encode"
+<br>
+
+
+
+
