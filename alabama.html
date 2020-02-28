@@ -21,6 +21,72 @@ function typeWriter() {
   }
 }
 </script>
+<font size"6">DOM XSS stands for Document Object Model-based Cross-site Scripting. A DOM-based XSS attack is possible if the web application writes data to the Document Object Model without proper sanitization. The attacker can manipulate this data to include XSS content on the web page, for example, malicious JavaScript code.
+
+The Document Object Model is a convention used to represent and work with objects in an HTML document (as well as in other document types). All HTML documents have an associated DOM that consists of objects, which represent document properties from the point of view of the browser. When a client-side script is executed, it can use the DOM of the HTML page where the script runs. The script can access various properties of the page and change their values.
+
+An attacker may use several DOM objects to create a Cross-site Scripting attack. The most popular objects from this perspective are document.url, document.location, and document.referrer. Potential consequences of DOM-based XSS vulnerabilities are classified in the OWASP Top 10 2017 document as moderate.
+A Typical Example of a DOM XSS Attack
+
+The following is a basic example of a DOM-based Cross-site Scripting vulnerability. The http://www.example.com/userdashboard.html page is customized based on the user name. The user name is encoded in the URL and used directly on the resulting page:
+
+<html>
+<head>
+<title>Custom Dashboard </title>
+...
+</head>
+Main Dashboard for
+<script>
+	var pos=document.URL.indexOf("context=")+8;
+	document.write(document.URL.substring(pos,document.URL.length));
+</script>
+...
+</html>
+
+For example,
+
+http://www.example.com/userdashboard.html?context=Mary is a dashboard customized for Mary. It contains the string Main Dashboard for Mary at the top.
+
+Here is how a DOM-based XSS attack can be performed for this web application:
+
+    The attacker embeds a malicious script in the URL: http://www.example.com/userdashboard.html#context=<script>SomeFunction(somevariable)</script>.
+    The victim’s browser receives this URL, sends an HTTP request to http://www.example.com, and receives the static HTML page.
+    The browser starts building the DOM of the page and populates the document.URL property with the URL from step 1.
+    The browser parses the HTML page, reaches the script, and runs it, extracting the malicious content from the document.URL property.
+    The browser updates the raw HTML body of the page to contain: Main Dashboard for <script>SomeFunction(somevariable)</script>.
+    The browser finds the JavaScript code in the HTML body and executes it.
+
+In reality, the attacker would encode the URL payload so that it is not obvious that it contains a script. Some browsers may encode the < and > characters in the URL, causing the attack to fail. However, there are other scenarios that do not require these characters, nor embedding the code into the URL directly. Therefore, these browsers are not entirely immune to DOM XSS either.
+How is DOM XSS Different?
+
+Using the above example, we can observe that:
+
+    The HTML page is static and there are no malicious scripts embedded into the page source code, as in the case of other types of XSS attacks.
+    The script code never reaches the server if we use the # character. It is seen as a fragment and the browser does not forward it. Therefore, server-side attack detection tools will fail to detect this attack. Note that in some cases, depending on the type of the URL, the payload might get to the server and it may be impossible to hide it.
+
+The characteristics of classic XSS are not valid in the case of DOM-based XSS vulnerabilities. Instead, DOM XSS attacks exploit inappropriate manipulation of DOM objects and properties in client-side code.
+Defending Against DOM XSS Attacks
+
+DOM XSS attacks are difficult to detect by server-side attack detection and prevention tools. The malicious payload usually does not reach the server and therefore cannot be sanitized in server-side code. However, the root of the problem still resides in the code of the page, this time in client-side code. You can use the same sanitization and prevention techniques as for other XSS attacks. The only difference is that in this case, you must review and sanitize client-side code, not server-side code.
+
+To defend against DOM XSS, you can:
+
+    Avoid using data received from the client for client-side sensitive actions such as rewriting or redirection.
+    Sanitize client-side code by inspecting references to DOM objects that pose a threat, for example, URL, location, and referrer. This is especially important if DOM may be modified.
+    Use intrusion prevention systems that are able to inspect inbound URL parameters and prevent the inappropriate pages to be served.
+
+You can test the effectiveness of sanitization methods that you use by manually attempting to exploit them or by using automatic tools. Tools such as the Acunetix vulnerability scanner are much more effective. They perform automatic penetration tests using various payloads and mounting points to ensure complete web application security.
+Comparison Between Classic XSS and DOM-based XSS
+	Classic XSS 	DOM XSS
+Root cause 	Source code 	Source code
+Premises 	Inappropriate embedding of client-side data in outbound HTML pages (by the server) 	Inappropriate referencing and use of DOM objects in client-side
+Page type 	Dynamic 	Static or dynamic
+Detection 	Intrusion detection systems, logs 	Cannot be detected server side if proper evading techniques are being used by the attacker
+Detection of vulnerabilities 	Attack simulation, code review – server-side, vulnerability detection tools that perform automatic penetration testing 	Attack simulation, code review – client-side, vulnerability detection tools that perform automatic penetration testing
+Defending 	Sanitization – server side, intrusion prevention systems 	Sanitization – client-side, intrusion prevention systems (to a lesser extent)
+Detecting DOM-based XSS
+
+An easy way to test if your website or web application is vulnerable to DOM-based XSS and other vulnerabilities is to run an automated web scan using the Acunetix vulnerability scanner, which includes a specialized DOM-based XSS scanner module. Take a demo and run scans against your website or web application.
 
 </body>
 </html>             
