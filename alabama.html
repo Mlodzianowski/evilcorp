@@ -21,14 +21,23 @@ function typeWriter() {
   }
 }
 </script>
-<font size"6">DOM XSS stands for Document Object Model-based Cross-site Scripting. A DOM-based XSS attack is possible if the web application writes data to the Document Object Model without proper sanitization. The attacker can manipulate this data to include XSS content on the web page, for example, malicious JavaScript code.
+<font size"6">DOM XSS stands for Document Object Model-based Cross-site Scripting. 
+A DOM-based XSS attack is possible if the web application writes data to the Document Object Model without proper sanitization. 
+The attacker can manipulate this data to include XSS content on the web page, for example, malicious JavaScript code.<br>
+<p>
+The Document Object Model is a convention used to represent and work with objects in an HTML document (as well as in other document
+types). All HTML documents have an associated DOM that consists of objects, which represent document properties from the point of view 
+of the browser. When a client-side script is executed, it can use the DOM of the HTML page where the script runs. 
+	The script can access various properties of the page and change their values.<br>
 
-The Document Object Model is a convention used to represent and work with objects in an HTML document (as well as in other document types). All HTML documents have an associated DOM that consists of objects, which represent document properties from the point of view of the browser. When a client-side script is executed, it can use the DOM of the HTML page where the script runs. The script can access various properties of the page and change their values.
-
-An attacker may use several DOM objects to create a Cross-site Scripting attack. The most popular objects from this perspective are document.url, document.location, and document.referrer. Potential consequences of DOM-based XSS vulnerabilities are classified in the OWASP Top 10 2017 document as moderate.
+An attacker may use several DOM objects to create a Cross-site Scripting attack. The most popular objects from this perspective are
+	document.url, document.location, and document.referrer. Potential consequences of DOM-based XSS vulnerabilities are classified 
+	in the OWASP Top 10 2017 document as moderate.<br>
 A Typical Example of a DOM XSS Attack
 
-The following is a basic example of a DOM-based Cross-site Scripting vulnerability. The http://www.example.com/userdashboard.html page is customized based on the user name. The user name is encoded in the URL and used directly on the resulting page:
+The following is a basic example of a DOM-based Cross-site Scripting vulnerability. <br>
+	The http://www.example.com/userdashboard.html page is customized based on the user name. The user name is encoded in the URL 
+	and used directly on the resulting page:
 
 <html>
 <head>
